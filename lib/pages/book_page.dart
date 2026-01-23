@@ -9,33 +9,53 @@ class BookPage extends GetView<BookController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Manajemen Buku')),
+      appBar: AppBar(title: const Text('Book Management')),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
         if (controller.books.isEmpty) {
-          return const Center(child: Text('Belum ada buku'));
+          return const Center(child: Text('No books yet'));
         }
 
-        return ListView.builder(
-          itemCount: controller.books.length,
-          itemBuilder: (context, index) {
-            final book = controller.books[index];
+        final isWideScreen = screenWidth >= 600;
 
-            return BookCard(
-              book: book,
-              onEdit: () {
-                showBookFormDialog(controller, book: book);
-              },
-              onDelete: () {
-                controller.deleteBook(book.id);
-              },
-            );
-          },
-        );
+        if (isWideScreen) {
+          return GridView.builder(
+            padding: const EdgeInsets.all(12),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, 
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio: 3 / 0.95,
+            ),
+            itemCount: controller.books.length,
+            itemBuilder: (context, index) {
+              final book = controller.books[index];
+              return BookCard(
+                book: book,
+                onEdit: () => showBookFormDialog(controller, book: book),
+                onDelete: () => controller.deleteBook(book.id),
+              );
+            },
+          );
+        } else {
+          return ListView.builder(
+            itemCount: controller.books.length,
+            itemBuilder: (context, index) {
+              final book = controller.books[index];
+              return BookCard(
+                book: book,
+                onEdit: () => showBookFormDialog(controller, book: book),
+                onDelete: () => controller.deleteBook(book.id),
+              );
+            },
+          );
+        }
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

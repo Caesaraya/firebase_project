@@ -18,8 +18,9 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paymentController = Get.find<PaymentController>();
-    
+
     return Card(
+      elevation: 0,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: ListTile(
         title: Text(
@@ -30,9 +31,9 @@ class BookCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text('Penulis : ${book.author}'),
-            Text('Kategori : ${book.category}'),
-            Text('Harga : Rp ${book.harga}'),
+            Text('Writer : ${book.author}'),
+            Text('Category : ${book.category}'),
+            Text('Price : Rp ${book.harga}'),
           ],
         ),
         isThreeLine: true,
@@ -48,12 +49,37 @@ class BookCard extends StatelessWidget {
                   bookTitle: book.title,
                   amount: book.harga,
                 ),
-                tooltip: 'Bayar',
+                tooltip: 'Buy',
               ),
               IconButton(
                 icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: onDelete,
-                tooltip: 'Hapus',
+                tooltip: 'Delete',
+                onPressed: () {
+                  Get.dialog(
+                    AlertDialog(
+                      title: const Text('Delete Book'),
+                      content: Text(
+                        'Are you sure you want to delete "${book.title}"?\nThis action cannot be undone.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Get.back(),
+                          child: const Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.back(); 
+                            onDelete(); 
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text('Delete', style: TextStyle(color: Colors.white), ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

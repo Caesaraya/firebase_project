@@ -7,54 +7,97 @@ void showBookFormDialog(BookController controller, {Book? book}) {
   final titleC = TextEditingController(text: book?.title ?? '');
   final authorC = TextEditingController(text: book?.author ?? '');
   final categoryC = TextEditingController(text: book?.category ?? '');
-  final hargaC = TextEditingController(text: book?.harga.toString() ?? '');
+  final priceC = TextEditingController(text: book?.harga.toString() ?? '');
 
   final isEdit = book != null;
 
   Get.defaultDialog(
-    title: isEdit ? 'Edit Buku' : 'Tambah Buku',
-    content: Column(
-      children: [
-        TextField(
-          controller: titleC,
-          decoration: const InputDecoration(labelText: 'Judul'),
+    title: isEdit ? 'Edit Book' : 'Add Book',
+    titleStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    content: SizedBox(
+      width: MediaQuery.of(Get.context!).size.width * 0.7,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              controller: titleC,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: 'Book Title',
+                prefixIcon: const Icon(Icons.book),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            TextField(
+              controller: authorC,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: 'Author',
+                prefixIcon: const Icon(Icons.person),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            TextField(
+              controller: categoryC,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: 'Category',
+                prefixIcon: const Icon(Icons.category),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            TextField(
+              controller: priceC,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                labelText: 'Price',
+                prefixIcon: const Icon(Icons.attach_money),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ],
         ),
-        TextField(
-          controller: authorC,
-          decoration: const InputDecoration(labelText: 'Penulis'),
-        ),
-        TextField(
-          controller: categoryC,
-          decoration: const InputDecoration(labelText: 'Kategori'),
-        ),
-        TextField(
-          controller: hargaC,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'Harga'),
-        ),
-      ],
+      ),
     ),
-    textCancel: 'Batal',
-    textConfirm: isEdit ? 'Update' : 'Simpan',
+    textCancel: 'Cancel',
+    textConfirm: isEdit ? 'Update' : 'Save',
     confirmTextColor: Colors.white,
     onConfirm: () {
-      if (titleC.text.isEmpty ||
-          authorC.text.isEmpty ||
-          categoryC.text.isEmpty ||
-          hargaC.text.isEmpty) {
+      if (titleC.text.trim().isEmpty ||
+          authorC.text.trim().isEmpty ||
+          categoryC.text.trim().isEmpty ||
+          priceC.text.trim().isEmpty) {
         Get.snackbar(
-          'Error',
-          'Semua field wajib diisi',
+          'Validation Error',
+          'All fields are required',
           snackPosition: SnackPosition.BOTTOM,
         );
         return;
       }
 
-      final harga = int.tryParse(hargaC.text);
-      if (harga == null) {
+      final price = int.tryParse(priceC.text);
+      if (price == null) {
         Get.snackbar(
-          'Error',
-          'Harga harus berupa angka',
+          'Validation Error',
+          'Price must be a number',
           snackPosition: SnackPosition.BOTTOM,
         );
         return;
@@ -67,7 +110,7 @@ void showBookFormDialog(BookController controller, {Book? book}) {
             title: titleC.text,
             author: authorC.text,
             category: categoryC.text,
-            harga: harga,
+            harga: price,
             createdAt: book.createdAt,
           ),
         );
@@ -76,7 +119,7 @@ void showBookFormDialog(BookController controller, {Book? book}) {
           title: titleC.text,
           author: authorC.text,
           category: categoryC.text,
-          harga: harga,
+          harga: price,
         );
       }
 
