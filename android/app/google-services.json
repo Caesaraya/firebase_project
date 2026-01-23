@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "809058701655",
+    "project_id": "firemix-d7160",
+    "storage_bucket": "firemix-d7160.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809058701655:android:1e73beabd9f7cd5470ee12",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKlWUbf23gFu5N0JkWYZsE4c1CJey25Uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
